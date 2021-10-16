@@ -15,7 +15,9 @@ public class TestClient {
 		
 		JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean(); 
 		factory.setServiceClass(Hello.class); 
-		factory.setAddress("http://localhost:9000/Hello"); 
+		factory.setAddress("http://localhost:9000/services/Hello"); 
+		factory.setUsername("admin");
+		factory.setPassword("admin");
 		Hello client1 = (Hello) factory.create(); 
 		
 		Client client =  org.apache.cxf.jaxws.JaxWsClientProxy.getClient(client1);

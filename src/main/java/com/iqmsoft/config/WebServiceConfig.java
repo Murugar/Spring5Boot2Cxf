@@ -22,7 +22,7 @@ public class WebServiceConfig {
     
     @Bean
     public ServletRegistrationBean servletRegistrationBean() {
-        return new ServletRegistrationBean(new CXFServlet(), "/*");
+        return new ServletRegistrationBean(new CXFServlet(), "/services/*");
     }
 
 
