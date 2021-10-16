@@ -6,7 +6,9 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -15,13 +17,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
 
         //credentials and roles to use
-        auth.inMemoryAuthentication().withUser("admin").password("admin").roles("ADMIN");
+        auth.inMemoryAuthentication().withUser("admin").password(passwordEncoder()
+        		.encode("admin")).roles("ADMIN");
 
     }
     
     @Bean
-    public static NoOpPasswordEncoder passwordEncoder() {
-    return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Override
@@ -30,11 +33,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //this configuration define that every request is authorized only to Admin roles and authenticated users.
         http.antMatcher("/**")
                 .authorizeRequests().antMatchers("/**").authenticated()
-                .anyRequest().hasRole("ADMIN")
+                .anyRequest()
+                .hasRole("ADMIN")
                 
                 
-                //.hasRole("ADMIN")
-                
+              
                 
 
                 //this configuration define an http basic authentication
